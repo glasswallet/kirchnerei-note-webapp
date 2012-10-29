@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE urlrewrite
+	PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+	"http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+<urlrewrite use-query-string="true">
+	<rule>
+		<name>home with id</name>
+		<from>^/home/([0-9]+).html$</from>
+		<to>/index.html?action=home&amp;id=$1</to>
+	</rule>
+	<rule>
+		<name>index with id</name>
+		<from>^/index/([0-9]+).html$</from>
+		<to>/index.html?action=home&amp;id=$1</to>
+	</rule>
+	<rule>
+		<name>edit with id</name>
+		<from>^/edit/([0-9]+).html$</from>
+		<to>/index.html?action=edit&amp;id=$1</to>
+	</rule>
+	<rule>
+		<name>remove with id</name>
+		<from>^/remove/([0-9]+).html$</from>
+		<to>/index.html?action=remove&amp;id=$1</to>
+	</rule>
+	<rule>
+		<name>home</name>
+		<from>^/home.html$</from>
+		<to>/index.html?action=home&amp;id=0</to>
+	</rule>
+	<rule>
+		<name>index</name>
+		<from>^/index.html$</from>
+		<to last="true">/index.html?action=home&amp;id=0</to>
+	</rule>
+	<rule>
+		<name>new</name>
+		<from>^/new.html$</from>
+		<to>/index.html?action=edit&amp;id=0</to>
+	</rule>
+</urlrewrite>

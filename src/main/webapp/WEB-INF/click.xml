@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<click-app charset="UTF-8" locale="de">
+	<pages package="kirchnerei.wimm.page">
+		<page path="/index.html" classname="IndexPage"/>
+		<excludes pattern="/assets/*"/>
+	</pages>
+	<mode value="production"/>
+	<log-service classname="org.apache.click.extras.service.JdkLogService"/>
+</click-app>

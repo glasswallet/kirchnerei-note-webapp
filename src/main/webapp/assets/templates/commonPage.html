@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>$messages.pageTitle - $messages.appTitle</title>
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+$headElements
+</head>
+<body>
+<div class="navbar navbar-static-top">
+	<div class="navbar-inner">
+		<div class="container">
+			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</a>
+			<a href="/home.html" class="brand">$messages.appTitle</a>
+			<div class="nav-collapse">
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+#parse($path)
+	<hr/>
+</div>
+<footer class="footer">
+	<div class="container">
+		<div class="row">
+			<div class="span4">
+				<h6>Info</h6>
+				<ul class="unstyled">
+					<li>$messages.appTitle $messages.appVersion</li>
+					<li>Copyright 2012 by <a href="http://www.kirchnerei.de">http://www.kirchnerei.de</a></li>
+
+				</ul>
+			</div>
+			<div class="span4">
+				<h6>Tooling</h6>
+				<ul class="unstyled">
+					<li><a href="https://developers.google.com/appengine/">Google App Engine</a></li>
+					<li><a href="http://www.jetbrains.com/idea/">Jetbrains - Idea</a></li>
+					<li><a href="http://www.java.com">Java</a></li>
+					<li><a href="http://maven.apache.org/">Maven</a></li>
+				</ul>
+			</div>
+			<div class="span4">
+				<h6>Special thanks to:</h6>
+				<ul class="unstyled">
+					<li><a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a></li>
+					<li><a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a></li>
+					<li><a href="https://github.com/taylorleese/google-app-engine-jappstart">google app engine - jappstart</a></li>
+					<li><a href="http://www.tuckey.org/urlrewrite/">Tuckey Url Rewrite</a></li>
+					<li><a href="http://click.apache.org/">Apache Click</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</footer>
+$jsElements
+<script type="text/javascript">
+jQuery(function() {
+	website.initApplication('$request.contextPath', '[]', {});
+});
+</script>
+</body>
+</html></html>
+

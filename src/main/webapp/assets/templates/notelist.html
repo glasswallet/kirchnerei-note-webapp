@@ -1,0 +1,35 @@
+<h1>$messages.headNoteTitle</h1>
+<hr/>
+#if ($notelist && !$notelist.empty)
+	<table class="table table-bordered table-striped table-hover" id="note-table">
+		<thead>
+		<tr>
+			<th class="span1 text-pull-center">$messages.tableHeadNr</th>
+			<th class="span2">$messages.tableHeadCategory</th>
+			<th class="span3">$messages.tableHeadTitle</th>
+			<th class="span4">$messages.tableHeadText</th>
+			<th class="span2 text-pull-right"><a href="/new.html" class="btn btn-small" title="$messages.linkNewTitle"><i class="icon-plus-sign"></i></a></th>
+		</tr>
+		</thead>
+		<tbody>
+#foreach ($item in $notelist)
+		<tr #if ($item.select)class="info" #end id="$item.id">
+			<td class="text-pull-center">$item.id</td>
+			<td>$item.categoryTitle</td>
+			<td>$item.title</td>
+			<td>$item.text</td>
+			<td class="btn-group text-pull-right">
+				<a href="$item.editUrl" class="btn btn-small" title="$messages.linkEditTitle"><i class="icon-edit"></i></a>
+				<a href="/remove/${item.id}.html" class="btn btn-small" title="$messages.linkRemoveTitle"><i class="icon-remove"></i></a>
+			</td>
+		</tr>
+#end
+		</tbody>
+	</table>
+#else
+	<div class="alert alert-info">
+		<h3 class="alert-heading">$messages.missingNoteTitle</h3>
+		<p>$messages.missingNoteText</p>
+	</div>
+#end
+

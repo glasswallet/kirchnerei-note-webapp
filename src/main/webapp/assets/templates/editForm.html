@@ -1,0 +1,16 @@
+<h1>$editFormTitle</h1>
+<hr/>
+<form method="post" action="$note.editUrl" accept-charset="UTF-8" class="form">
+	<label for="category">$messages.formHeadCategory</label>
+	<input type="text" name="category" id="category" class="span12" autocomplete="off"
+		   placeholder="$messages.formHeadCategory" value="$note.categoryTitle"
+		   data-source='$categorySource' data-minLength="1" data-provide="typeahead">
+	<label for="title">$messages.formHeadTitle</label>
+	<input type="text" name="title" id="title" class="span12" placeholder="$messages.formHeadTitle" value="$note.title">
+	<label for="text">$messages.formHeadText</label>
+	<textarea rows="5" cols="30" name="text" id="text" class="span12">$note.text</textarea>
+	<div class="btn-group">
+		<button type="submit" class="btn btn-primary">$messages.formButtonSave</button>
+		<a href="/home.html" class="btn">$messages.formButtonCancel</a>
+	</div>
+</form>

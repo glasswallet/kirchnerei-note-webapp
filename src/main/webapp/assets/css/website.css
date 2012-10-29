@@ -1,0 +1,25 @@
+/*!
+ * Copyright (c) 2012 Kirchner
+ * web:     http://www.kirchnerei.de
+ * mail:    infos@kirchnerei.de
+ * Project: Wimm-Online (github)
+ */
+
+
+
+.text-pull-right {
+	text-align: right !important;
+}
+
+.text-pull-left {
+	text-align: left !important;
+}
+
+.text-pull-center {
+	text-align: center !important;
+}
+
+
+#note-table tbody td:first-child {
+	cursor: pointer
+}
