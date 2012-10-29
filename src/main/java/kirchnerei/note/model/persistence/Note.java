@@ -15,8 +15,6 @@
  */
 package kirchnerei.note.model.persistence;
 
-import kirchnerei.note.model.NoteData;
-
 import javax.persistence.*;
 import java.io.Serializable;
 

@@ -1,43 +1,47 @@
 /*
- * Copyright (c) 2012 Kirchner
- * web:     http://www.kirchnerei.de
- * mail:    infos@kirchnerei.de
- * Project: Wimm-Online (github)
+ * Copyright 2012 Kirchnerei
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package kirchnerei.note.page;
 
-import kirchnerei.wimm.composite.CompositeBuilder;
-import kirchnerei.wimm.db.CategoryDataSource;
-import kirchnerei.wimm.db.NoteDataSource;
-import kirchnerei.wimm.db.model.Category;
-import kirchnerei.wimm.db.model.Note;
-import kirchnerei.wimm.json.JsonService;
-import kirchnerei.wimm.util.LogUtils;
-import kirchnerei.wimm.util.NumberUtils;
-import kirchnerei.wimm.view.NoteUI;
-import kirchnerei.wimm.view.NoteView;
-import kirchnerei.wimm.view.NoteViewFactory;
+import kirchnerei.grundstein.LogUtils;
+import kirchnerei.grundstein.NumberUtils;
+import kirchnerei.grundstein.click.service.RequestBeanService;
+import kirchnerei.grundstein.composite.CompositeBuilder;
+import kirchnerei.note.model.CategoryData;
+import kirchnerei.note.model.DataService;
+import kirchnerei.note.model.NoteData;
+import kirchnerei.note.model.NoteView;
+import kirchnerei.note.render.Render;
 import org.apache.click.Context;
 import org.apache.click.util.Bindable;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
-/**
- * The class <code>IndexPage</code>
- *
- * @author Sarah Kirchner<br>Kirchnerei 2012
- */
 public class IndexPage extends CommonPage {
 
 	private static final Log log = LogFactory.getLog(IndexPage.class);
 
-	private NoteDataSource noteSource;
-	private CategoryDataSource categorySource;
-	private NoteViewFactory noteViewFactory;
-	private JsonService jsonService;
+	private static final List<String> noteViewProperties = Arrays.asList("id", "title", "text", "category");
+
+	private DataService dataService;
+	private Render render;
+	private RequestBeanService requestBean;
 
 	@Bindable
 	protected Long id;
@@ -49,51 +53,49 @@ public class IndexPage extends CommonPage {
 	protected String action;
 
 	@Override
-	public void init(CompositeBuilder cb) {
-		noteSource = cb.getSingleton(NoteDataSource.class);
-		categorySource = cb.getSingleton(CategoryDataSource.class);
-		jsonService = cb.getSingleton(JsonService.class);
-		noteViewFactory = cb.getSingleton(NoteViewFactory.class);
+	public void init(CompositeBuilder builder) {
+		dataService = builder.getSingleton(DataService.class);
+		render = builder.getSingleton(Render.class);
+		requestBean = builder.getSingleton(RequestBeanService.class);
 	}
 
 	@Override
 	public void onInit() {
 		super.onInit();
-		if (id == null || id < 0) {
+		if (NumberUtils.isEmpty(id)) {
 			id = 0L;
 		}
 		if (StringUtils.isEmpty(action)) {
 			action = HOME_ACTION;
 		}
-		LogUtils.logDebug(log, "call action=%s, id=%s", action, id);
+		LogUtils.debug(log, "IndexPage: call action=%s, id=%s", action, id);
 	}
 
 	@Override
 	public void onGet() {
 		if (isRemoveAction(action)) {
-			noteSource.remove(id);
+			dataService.removeNote(id);
 			setRedirect("/home.html");
 			return;
 		}
-		addModel("notelist", noteViewFactory.getAllNotes());
-		NoteUI note = noteViewFactory.getNoteForEdit(id);
-		String actionUrl = null;
-		String editFormTitle = null;
+		List<NoteData> noteList = dataService.getNoteList();
+		addModel("notelist", render.createNoteList(noteList));
+		NoteData note = dataService.getNoteById(id);
+		String actionUrl;
+		String editFormTitle;
 		if (!NumberUtils.isEmpty(id)) {
-			actionUrl = String.format("/edit/%s.html", id);
+			actionUrl = String.format("edit/%s.html", id);
 			editFormTitle = getMessage("editFormEdit");
 		} else {
-			actionUrl = "/new.html";
+			actionUrl = "new.html";
 			editFormTitle = getMessage("editFormNew");
 		}
-		addModel("note", note);
+		addModel("note", render.createFormNote(note));
 		addModel("actionUrl", actionUrl);
 		addModel("editFormTitle", editFormTitle);
 		// categorySources laden
-		List<String> list = categorySource.getAllCategoryTitles();
-		String categorySource = jsonService.write(list);
-		LogUtils.logDebug(log, "1. category sources: '%s'", categorySource);
-		addModel("categorySource", categorySource);
+		List<CategoryData> categoryDataList = dataService.getCategoryList();
+		addModel("categorySource", render.createCategoryList(categoryDataList));
 	}
 
 	@Override
@@ -102,8 +104,8 @@ public class IndexPage extends CommonPage {
 			return;
 		}
 		Context ctx = getContext();
-		id = noteViewFactory.saveNote(id, ctx.getRequestParameter("category"),
-			ctx.getRequestParameter("title"), ctx.getRequestParameter("text"));
+		NoteView noteView = requestBean.read(ctx, NoteView.class, noteViewProperties);
+		id = dataService.storeNote(noteView);
 		setRedirect(String.format("/home/%s.html", id));
 	}
 }

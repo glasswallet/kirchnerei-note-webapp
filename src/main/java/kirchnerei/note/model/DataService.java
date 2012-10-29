@@ -105,6 +105,24 @@ public class DataService implements CompositeInit {
 		}
 	}
 
+	public NoteData getNoteById(Long id) {
+		if (NumberUtils.isEmpty(id)) {
+			return new NoteView();
+		}
+		EntityManager em = null;
+		try {
+			em = entityService.get();
+			Note note = em.find(Note.class, id);
+			if (note == null) {
+				return new NoteView();
+			}
+			return new NoteView(note.getId(), note.getTitle(), note.getText(),
+				note.getCategory().getTitle());
+		} finally {
+			EntityService.close(em);
+		}
+	}
+
 	public boolean removeNote(Long id) {
 		if (NumberUtils.isEmpty(id)) {
 			return false;

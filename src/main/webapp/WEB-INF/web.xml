@@ -12,13 +12,53 @@
 		<param-name>kirchnerei.grundstein.composite.Setup</param-name>
 		<param-value>kirchnerei.note.webapp.NoteSetup</param-value>
 	</context-param>
+	<context-param>
+		<param-name>config-service-class</param-name>
+		<param-value>kirchnerei.grundstein.click.service.GrundsteinConfigureService</param-value>
+	</context-param>
 
 	<listener>
 		<description>
 			initialized the CompositeBuilder instance
 		</description>
-		<listener-class>kirchnerei.grundstein.webapp.HttpBuilder</listener-class>
+		<listener-class>kirchnerei.grundstein.webapp.HttpBuilderListener</listener-class>
 	</listener>
 
+	<filter>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<filter-class>org.tuckey.web.filters.urlrewrite.UrlRewriteFilter</filter-class>
+		<init-param>
+			<param-name>statusEnabledOnHosts</param-name>
+			<param-value>*</param-value>
+		</init-param>
+		<init-param>
+			<param-name>logLevel</param-name>
+			<param-value>WARN</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>UrlRewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>ClickServlet</servlet-name>
+		<servlet-class>kirchnerei.grundstein.click.GrundsteinClickServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClickServlet</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>home.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>

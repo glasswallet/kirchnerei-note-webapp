@@ -15,9 +15,23 @@
  */
 package kirchnerei.note.webapp;
 
+import kirchnerei.grundstein.composite.CompositeException;
 import kirchnerei.grundstein.persistence.EntityService;
 
 public class NoteSetup {
+
+
+	public static String getParam(String name) {
+		String value = System.getenv(name);
+		if (value == null) {
+			value = System.getProperty(name);
+		}
+		if (value == null) {
+			throw new CompositeException(
+				"parameter '%s' is not present in system env oder system properties", name);
+		}
+		return value;
+	}
 
 	/**
 	 * Configure the EntityService with the persistence unit name.
@@ -25,6 +39,12 @@ public class NoteSetup {
 	public static class entityService extends EntityService {
 		{
 			setName("note-app");
+
+			String driver = getParam("NOTE_DRIVER");
+			String url = getParam("NOTE_URL");
+			String user = getParam("NOTE_USER");
+			String password = getParam("NOTE_PASSWORD");
+			setUpPersistence(driver, url, user, password);
 		}
 	}
 }

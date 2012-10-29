@@ -1,16 +1,21 @@
 /*
- * Copyright (c) 2012 Kirchner
- * web:     http://www.kirchnerei.de
- * mail:    infos@kirchnerei.de
- * Project: Wimm-Online (github)
+ * Copyright 2012 Kirchnerei
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package kirchnerei.note.page;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-import kirchnerei.wimm.composite.CompositeInit;
-import kirchnerei.wimm.util.LogUtils;
-import org.apache.click.Context;
+import kirchnerei.grundstein.composite.CompositeInit;
 import org.apache.click.Page;
 import org.apache.click.element.CssImport;
 import org.apache.click.element.Element;
@@ -20,11 +25,6 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 
-/**
- * The class <code>CommonPage</code>
- *
- * @author Sarah Kirchner<br>Kirchnerei 2012
- */
 public abstract class CommonPage extends Page implements CompositeInit {
 
 	public static final String HOME_ACTION = "home";
@@ -34,23 +34,6 @@ public abstract class CommonPage extends Page implements CompositeInit {
 	public static final String REMOVE_ACTION = "remove";
 
 	private static final Log log = LogFactory.getLog(CommonPage.class);
-
-/*-
-	@Override
-	public boolean onSecurityCheck() {
-		UserService userService = UserServiceFactory.getUserService();
-		boolean isLogged = userService.isUserLoggedIn();
-		LogUtils.logDebug(log, "user is logged: %s", isLogged ? "yes" : "no");
-		if (!isLogged) {
-			Context ctx = getContext();
-			String redirectUrl = "";
-			LogUtils.logDebug(log, "login and redirect to %s", redirectUrl);
-			String urlLogin = userService.createLoginURL(redirectUrl);
-			setRedirect(urlLogin);
-		}
-		return isLogged;
-	}
--*/
 
 	@Override
 	public List<Element> getHeadElements() {
