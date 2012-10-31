@@ -17,7 +17,8 @@ package kirchnerei.note.page;
 
 import kirchnerei.grundstein.LogUtils;
 import kirchnerei.grundstein.NumberUtils;
-import kirchnerei.grundstein.click.service.RequestBeanService;
+import kirchnerei.grundstein.bean.BeanCopy;
+import kirchnerei.grundstein.click.util.ContextDelivery;
 import kirchnerei.grundstein.composite.CompositeBuilder;
 import kirchnerei.note.model.CategoryData;
 import kirchnerei.note.model.DataService;
@@ -41,7 +42,7 @@ public class IndexPage extends CommonPage {
 
 	private DataService dataService;
 	private Render render;
-	private RequestBeanService requestBean;
+	private BeanCopy beanCopy;
 
 	@Bindable
 	protected Long id;
@@ -56,7 +57,7 @@ public class IndexPage extends CommonPage {
 	public void init(CompositeBuilder builder) {
 		dataService = builder.getSingleton(DataService.class);
 		render = builder.getSingleton(Render.class);
-		requestBean = builder.getSingleton(RequestBeanService.class);
+		beanCopy = builder.getSingleton(BeanCopy.class);
 	}
 
 	@Override
@@ -104,7 +105,7 @@ public class IndexPage extends CommonPage {
 			return;
 		}
 		Context ctx = getContext();
-		NoteView noteView = requestBean.read(ctx, NoteView.class, noteViewProperties);
+		NoteView noteView = beanCopy.read(new ContextDelivery(ctx), noteViewProperties, NoteView.class);
 		id = dataService.storeNote(noteView);
 		setRedirect(String.format("/home/%s.html", id));
 	}
